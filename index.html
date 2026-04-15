@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aria Starter</title>
+<style>
+body{font-family:system-ui;margin:0;background:#f5f5f5;}
+.chat{max-width:420px;margin:40px auto;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.1);display:flex;flex-direction:column;overflow:hidden;}
+.header{padding:16px;background:#1F5EFF;color:#fff;font-weight:600;}
+.messages{padding:16px;height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+.msg{padding:10px 14px;border-radius:12px;max-width:80%;font-size:14px;}
+.bot{background:#f1f1f1;}
+.user{background:#1F5EFF;color:#fff;align-self:flex-end;}
+.input{display:flex;border-top:1px solid #eee;}
+input{flex:1;padding:12px;border:none;outline:none;}
+button{background:#1F5EFF;color:#fff;border:none;padding:12px 16px;cursor:pointer;}
+.lead{padding:16px;border-top:1px solid #eee;}
+</style>
+</head>
+<body>
+
+<div class="chat">
+  <div class="header">Aria • AI Assistant</div>
+  <div class="messages" id="messages"></div>
+
+  <div class="input">
+    <input id="input" placeholder="Ask something...">
+    <button onclick="send()">→</button>
+  </div>
+
+  <div class="lead" id="lead" style="display:none;">
+    <input placeholder="Your name" id="name"><br><br>
+    <input placeholder="Your email" id="email"><br><br>
+    <button onclick="captureLead()">Get Details</button>
+  </div>
+</div>
+
+<script>
+const messages=document.getElementById("messages");let count=0;
+function add(text,cls){const div=document.createElement("div");div.className="msg "+cls;div.innerText=text;messages.appendChild(div);messages.scrollTop=messages.scrollHeight;}
+function botReply(text){add(text,"bot");setTimeout(()=>{add("Would you like pricing or booking details?","bot");},800);}
+function send(){const input=document.getElementById("input");const text=input.value;if(!text)return;add(text,"user");input.value="";count++;
+if(text.toLowerCase().includes("price")){botReply("Our services start from $25 depending on what you need.");}
+else if(text.toLowerCase().includes("book")){botReply("You can book an appointment. Want me to save your details?");showLead();}
+else{botReply("Yes, we can help with that.");}
+if(count===3){showLead();}}
+function showLead(){document.getElementById("lead").style.display="block";}
+function captureLead(){const name=document.getElementById("name").value;const email=document.getElementById("email").value;console.log("Lead:",name,email);add("Thanks! We'll contact you soon.","bot");document.getElementById("lead").style.display="none";}
+setTimeout(()=>{add("Hi 👋 Looking for pricing or booking?","bot");},500);
+</script>
+
+</body>
+</html>
